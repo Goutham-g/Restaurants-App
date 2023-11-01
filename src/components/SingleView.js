@@ -1,31 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getRestaurant } from '../actions/restAction';
+
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Accordion from 'react-bootstrap/Accordion';
+// import { getRestaurant } from '../actions/restAction';
 
 
 function SingleView() {
 
     let params = useParams();
+    const [restAll, setRestAll] = useState([])
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
+    // useEffect(() => {
+    //     // fetchShop();
+    //     dispatch(getRestaurant)
+    // }, []);
 
+    // const restaurants = useSelector(state => state.restReducer.restLis)
+
+    // console.log(restaurants);
+
+    const fetchRest = async () => {
+        var res = await fetch('/restaurants.json')
+        res.json().then(data => setRestAll(data.restaurants))
+    }
+    console.log(restAll);
     useEffect(() => {
-        dispatch(getRestaurant)
-    }, []);
-
-    const restaurants = useSelector(state => state.restReducer.restLis);
+        fetchRest()
+    }, [])
 
 
-    const singleDetail = restaurants.find(i => i.id == params.id);
+
+    const singleDetail = restAll.find(i => i.id == params.id);
     console.log(singleDetail);
 
 
-    //react bootstrap
+    // react bootstrap
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -33,17 +47,18 @@ function SingleView() {
 
 
     return (
+        // <>gsdfgsdggfgds</>
         <div>
             {
                 singleDetail ?
                     <section>
                         <div class="container">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <img src={singleDetail.photograph} alt="" width="400" />
+                                <div class="col-md-6 col-sm-12">
+                                    <img src={singleDetail.photograph} alt="" width="300" />
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-6 c0l-sm-12 ">
                                     <h1>{singleDetail.name}</h1>
                                     <h3>Neighborhood : {singleDetail.neighborhood}</h3>
                                     <div>
@@ -56,27 +71,25 @@ function SingleView() {
                                             Operating Hours
                                         </Button>
 
-                                        <Modal show={show} onHide={handleClose}>
-                                            <Modal.Header closeButton>
+                                        <Modal className='text-dark' show={show} onHide={handleClose}>
+                                            <Modal.Header >
                                                 <Modal.Title>Operating Hours</Modal.Title>
-                                            </Modal.Header>
-                                            <Modal.Body>
-                                                <h4>Monday: {singleDetail.operating_hours.Monday}</h4>
-                                                <h4>Tuesday: {singleDetail.operating_hours.Tuesday}</h4>
-                                                <h4>Wednesday: {singleDetail.operating_hours.Wednesday}</h4>
-                                                <h4>Thursday: {singleDetail.operating_hours.Thursday}</h4>
-                                                <h4>Friday: {singleDetail.operating_hours.Friday}</h4>
-                                                <h4>Saturday: {singleDetail.operating_hours.Saturday}</h4>
-                                                <h4>Sunday: {singleDetail.operating_hours.Sunday}</h4>
+                                            </Modal.Header >
+                                            <Modal.Body className='text-dark '>
+                                                <h5>Monday: {singleDetail.operating_hours.Monday}</h5>
+                                                <h5>Tuesday: {singleDetail.operating_hours.Tuesday}</h5>
+                                                <h5>Wednesday: {singleDetail.operating_hours.Wednesday}</h5>
+                                                <h5>Thursday: {singleDetail.operating_hours.Thursday}</h5>
+                                                <h5>Friday: {singleDetail.operating_hours.Friday}</h5>
+                                                <h5>Saturday: {singleDetail.operating_hours.Saturday}</h5>
+                                                <h5>Sunday: {singleDetail.operating_hours.Sunday}</h5>
 
                                             </Modal.Body>
                                             <Modal.Footer>
                                                 <Button variant="secondary" onClick={handleClose}>
                                                     Close
                                                 </Button>
-                                                <Button variant="primary" onClick={handleClose}>
-                                                    Save Changes
-                                                </Button>
+
                                             </Modal.Footer>
                                         </Modal>
                                     </div>

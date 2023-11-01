@@ -43,7 +43,7 @@ function Home() {
 
     const restaurants = useSelector(state => state.restReducer.restLis)
 
-
+    console.log(restaurants);
 
 
     return (
@@ -91,7 +91,7 @@ function Home() {
                                                 <Card.Text>
                                                     {i.address}
                                                 </Card.Text>
-                                                <Button variant="primary">Go somewhere</Button>
+                                                <Button variant="primary">View</Button>
                                             </Card.Body>
                                         </Card>
 
